@@ -14,6 +14,10 @@ Esta seção é preenchida pela entrevista de [[Projetos/primeiros-passos/plano|
 - Peça confirmação antes de apagar ou reorganizar muitos arquivos.
 - Entrada guarda materiais ainda não organizados; Referências, material de consulta.
 
+## Arquitetura Limpa é lei
+
+Em todo projeto de programação, a Arquitetura Limpa vem **antes** de prazo, funcionalidade nova e economia de tokens, inclusive em correção pontual e trabalho de worker: decida a camada de cada parte antes de escrever ([[Referências/Desenvolvimento/regras-gerais|regras gerais]], seção 1), não entregue desvio “para corrigir depois”, rode o teste de arquitetura (zero violações) e revise o próprio diff contra a lista de proibidos antes de cada commit. Etapa ou módulo novo passa por revisão independente antes da entrega. Uma entrega com desvio conhecido não está pronta.
+
 ## Antes de executar
 
 1. Consulte [[inicio|inicio.md]] para localizar o projeto ou a referência pertinente.

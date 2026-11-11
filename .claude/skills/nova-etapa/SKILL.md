@@ -38,6 +38,7 @@ Cada passo só avança com a confirmação explícita do usuário. Se o projeto 
 
 ## 5. Implementação e entrega
 - Só depois da síntese confirmada (e do visual, quando houver). Se o projeto tem repositório, preserve as alterações existentes antes de começar.
+- **Portão de Arquitetura Limpa (lei):** antes de escrever, liste cada arquivo com a camada e a função, pela tabela das [[Referências/Desenvolvimento/regras-gerais|regras gerais]] (seção 1), e confira a lista de proibidos. Antes de cada commit, teste de arquitetura com zero violações e revisão do próprio diff; no fim da etapa, revisão independente (outro agente, só leitura) antes da entrega.
 - Desvio de uma decisão confirmada fica como proposta em `plano.md` até o usuário responder.
 - Teste e entregue como combinado no passo 3. Informe o que foi verificado, o que não foi e, se houver executável, a pasta exata.
 - Atualize os registros e envie o backup, conforme "Antes de encerrar a tarefa" no `AGENTS.md` da vault.
