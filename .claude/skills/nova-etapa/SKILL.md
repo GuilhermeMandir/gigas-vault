@@ -17,7 +17,7 @@ Cada passo só avança com a confirmação explícita do usuário. Se o projeto 
 - No repositório, se houver: `AGENTS.md`, README e a documentação das etapas relacionadas.
 - Confirme a leitura com um resumo curto: o estado atual, as decisões que valem para a etapa e o que ainda não está definido.
 - Projeto novo: crie a pasta em `Projetos/` com os modelos de `Modelos/`, conforme `Referências/Sistema/organizacao.md`.
-- Siga as [[Referências/Desenvolvimento/regras-gerais|regras gerais de desenvolvimento]] (Arquitetura Limpa, testes, versionamento, GitHub) e a nota `regras-de-desenvolvimento.md` do projeto: confira se o código que a etapa vai tocar segue as regras e registre os desvios no plano.
+- Siga as [[Referências/Desenvolvimento/regras-gerais|regras gerais de desenvolvimento]] (arquitetura definida pelo projeto, testes, versionamento e GitHub opcional) e a nota `regras-de-desenvolvimento.md` do projeto: confira se o código que a etapa vai tocar segue as regras e registre os desvios no plano.
 
 ## 2. Levantamento
 - Estude as fontes do usuário (documentos, exemplos, imagens, sistemas parecidos) e o que já existe no código.
@@ -26,6 +26,7 @@ Cada passo só avança com a confirmação explícita do usuário. Se o projeto 
 ## 3. Entrevista
 - Uma pergunta por vez, com a recomendação marcada como primeira opção. Pergunte só o que não dá para descobrir sozinho.
 - Inclua, se ainda não estiverem decididos:
+  - **arquitetura**: escolha e fronteiras, se ainda não registradas;
   - **como testar**: testes automáticos, capturas de tela, roteiro manual;
   - **como entregar**: executável e pasta, link, arquivo;
   - **o que fica fora** desta etapa.
@@ -38,7 +39,8 @@ Cada passo só avança com a confirmação explícita do usuário. Se o projeto 
 
 ## 5. Implementação e entrega
 - Só depois da síntese confirmada (e do visual, quando houver). Se o projeto tem repositório, preserve as alterações existentes antes de começar.
-- **Portão de Arquitetura Limpa (lei):** antes de escrever, liste cada arquivo com a camada e a função, pela tabela das [[Referências/Desenvolvimento/regras-gerais|regras gerais]] (seção 1), e confira a lista de proibidos. Antes de cada commit, teste de arquitetura com zero violações e revisão do próprio diff; no fim da etapa, revisão independente (outro agente, só leitura) antes da entrega.
+- **Arquitetura do projeto:** definir e documentar a arquitetura antes da primeira implementação; em projeto existente, seguir a já registrada. Localizar responsabilidades e dependências dos arquivos antes de escrever. Revisar o diff e aplicar os portões específicos antes de cada commit; etapa nova passa por revisão independente antes da entrega. Arquitetura Limpa é obrigatória apenas nos projetos que a adotaram, como o DGLab.
+- **Execução incremental:** estabilizar contratos numa fatia ponta a ponta antes de paralelizar dependentes; integrar cada unidade pronta. Usar briefs/checkpoints curtos e evidências rastreáveis por revisão, conforme seção 6 das regras gerais.
 - Desvio de uma decisão confirmada fica como proposta em `plano.md` até o usuário responder.
 - Teste e entregue como combinado no passo 3. Informe o que foi verificado, o que não foi e, se houver executável, a pasta exata.
 - Atualize os registros e envie o backup, conforme "Antes de encerrar a tarefa" no `AGENTS.md` da vault.

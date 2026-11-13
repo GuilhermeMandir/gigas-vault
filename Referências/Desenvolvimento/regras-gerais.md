@@ -1,61 +1,26 @@
 # Regras gerais de desenvolvimento
 
-Última atualização: 2026-11-11 (Arquitetura Limpa como lei).
+Última atualização: 2026-11-13 (arquitetura por projeto e execução incremental aprovadas).
 
-Valem para **todo projeto de programação** da vault. Cada projeto tem, além destas, uma nota própria de regras (`Projetos/<projeto>/regras-de-desenvolvimento.md`) só com o que é dele; nada desta nota se repete lá. Estas regras não dependem de nenhum projeto. Origem: decisões do usuário de 2026-10-22 (Arquitetura Limpa), 2026-11-11 (“Arquitetura limpa é lei”) e de 2026-11-10 (modelo de testes, versionamento e GitHub, confirmados com “Confirmo”).
+Valem para **todo projeto de programação** da vault. Cada projeto tem, além destas, uma nota própria de regras (`Projetos/<projeto>/regras-de-desenvolvimento.md`) só com o que é dele; nada desta nota se repete lá. Estas regras não dependem de nenhum projeto. Origem: decisões de 2026-11-10 (testes, versionamento e GitHub) e 2026-11-13 (arquitetura por projeto e fluxo incremental). A obrigação universal anterior de Arquitetura Limpa foi substituída; sua regra completa foi transferida para o DGLab.
 
-## 1. Arquitetura Limpa — lei
+## 1. Arquitetura definida por projeto
 
-**Prioridade acima de prazo, funcionalidade nova e economia de tokens.** Nenhum código entra fora destas regras “para corrigir depois”. O critério de aceite de toda entrega é conformidade total; uma entrega com desvio conhecido não está pronta. Origem: “Arquitetura limpa é lei” (usuário, 2026-11-11), depois de duas levas inteiras de refatoração no DGLab (auditoria, oito etapas, reauditoria e correção integral) que poderiam ter sido evitadas.
+Todo projeto de programação deve **definir bem sua arquitetura, documentá-la e segui-la fielmente**. A escolha deve atender ao objetivo, à complexidade, aos riscos e à manutenção esperada; Arquitetura Limpa é uma opção, não uma obrigação geral.
 
-### Camadas
+- Antes da primeira implementação, definir na nota `regras-de-desenvolvimento.md` do projeto a arquitetura adotada, responsabilidades dos módulos ou camadas, dependências permitidas, fronteiras de dados/efeitos externos e como conferir a conformidade. Detalhes técnicos ficam junto ao código, com link na vault.
+- Em projeto existente, consultar a arquitetura registrada antes de escrever. Se faltar definição ou houver conflito, esclarecer e registrar antes da alteração dependente; não inventar uma nova arquitetura silenciosamente.
+- Em cada mudança, localizar as responsabilidades e os arquivos na arquitetura escolhida. Não criar camadas, portas ou serviços sem necessidade dessa arquitetura e do comportamento pedido.
+- Revisar o próprio diff antes de cada commit; aplicar as verificações de arquitetura definidas pelo projeto e corrigir desvios introduzidos antes da entrega. Desvios preexistentes encontrados devem ser registrados e tratados conforme as regras do projeto, sem refatoração ampla escondida.
+- Etapa ou módulo novo e mudança de arquitetura passam por revisão independente antes da entrega. Mudança da arquitetura acordada exige proposta e confirmação; prazo ou economia de tokens não autorizam descumpri-la.
+- Brief de worker escritor informa a arquitetura vigente, responsabilidade de cada arquivo permitido e dependências/alterações proibidas. O líder confere o diff antes de integrar.
+- No **DGLab**, a Arquitetura Limpa e seus portões continuam obrigatórios: regra específica.
 
-- **Domínio:** entidades e regras puras, sem dependência de interface, banco, arquivos, rede, relógio, aleatoriedade, geração de IDs ou bibliotecas externas.
-- **Aplicação:** casos de uso e **portas**, as interfaces de repositório, arquivos, PDF, relógio, IDs e afins de que os casos de uso precisam. Toda decisão, validação, coordenação e transação de um caso de uso mora aqui.
-- **Infraestrutura:** adaptadores finos que implementam as portas (banco, arquivos, bibliotecas externas). Não decidem política nem regra de negócio; aplicam o plano que recebem.
-- **Composição:** um único ponto monta as implementações e os casos de uso.
-- **Apresentação** (interface, linha de comando, API): desenha, coleta a intenção do usuário e chama **um** caso de uso por confirmação. Depende só da Aplicação e nunca pede serviços à composição como localizador.
-- As dependências sempre apontam para o núcleo.
-
-### Antes de escrever (em toda mudança, inclusive correção pontual)
-
-Decida onde cada parte vai, e só então escreva:
-
-| O que é | Onde vai |
-| --- | --- |
-| Regra do jogo/negócio, cálculo, elegibilidade, transição de estado, política de exclusão ou arquivamento | Domínio (função pura, testável sem portas) |
-| Carregar dados, aplicar a regra, gerar ID, ler relógio, validar referências, gravar, desfazer/refazer, decidir o que publicar | Aplicação (caso de uso) |
-| SQL, arquivo, zip, PDF, biblioteca externa | Infraestrutura (implementação de porta) |
-| Montar objetos | Composição |
-| Desenhar, rasterizar, gesto, prévia, seleção, rascunho na tela | Apresentação |
-
-### Proibido (lições da correção do DGLab, 2026-11-11)
-
-- Tela que coordena várias gravações, decide política, valida referência, cria ID persistente ou chama serviço técnico direto.
-- Uma confirmação do usuário gravada por vários casos de uso em sequência (lote parcial). **Tudo ou nada por confirmação:** uma confirmação = um caso de uso = uma transação; exceções só por decisão registrada.
-- Arquivo criado, publicado ou apagado fora da transação do caso de uso. Efeitos em arquivo participam de estágio/compensação: voltam no rollback, exclusões esperam o commit, gravação por temporário e renomeação (nunca destino parcial).
-- Falha que vira sucesso: retorno `true` com erro guardado à parte, exceção engolida, navegação que descarta rascunho quando salvar falhou.
-- Política (o que retirar, o que arquivar, o que é protegido) dentro do repositório/armazenamento.
-- Capacidade descoberta por cast (`x is IFoo`): se o caso de uso precisa, a porta declara.
-- Caso de uso montado fora da composição, por qualquer sintaxe ou por reflexão.
-- Confiar em dado que a tela informa quando o estado gravado é a fonte (ex.: origem de movimento).
-- Entrada pública que pula a validação aplicada pelos comandos especializados (toda entrada valida igual).
-
-### Guardas automáticas (obrigatórias em todo projeto)
-
-- Teste de arquitetura com **zero violações**: matriz de dependências entre camadas (incluindo arquivos de projeto, `.props`/`.targets` e `Compile`/`Import` de fora), fontes ambientes proibidas no núcleo, sem cast de capacidade, casos de uso montados só na composição — verificado no **binário compilado** quando a linguagem permitir, não só por texto.
-- Cada desvio encontrado ganha uma guarda nova ou um teste de regressão, além da correção.
-- Teste verde não certifica a localização das regras: a revisão continua obrigatória.
-
-### Antes de cada commit e de cada entrega
-
-- Revise o próprio diff contra as tabelas acima. Desvio **introduzido pela tarefa**: corrija antes de entregar. Desvio **preexistente** no código tocado: corrija na mesma leva; fora dele, vira item explícito do plano, com prioridade sobre funcionalidade nova, nunca uma refatoração escondida.
-- Etapa ou módulo novo, e qualquer mudança de arquitetura: **revisão independente** (outro agente, só leitura) antes da entrega, conferindo o código atual, não o relato do autor.
-- Brief de worker que escreve código leva esta seção, as camadas de cada arquivo permitido e o que fica proibido; o líder revisa o diff contra a lista antes de integrar.
+**Decisão de 2026-11-13:** substitui a obrigação universal de Arquitetura Limpa de 2026-11-11. Confirmação: “passar a regra para o projeto e deixar a regra geral como sempre definir bem uma arquitetura e seguila fielmente”. O DGLab conserva a escolha anterior.
 
 ## 2. Testes
 
-- **Testes unitários** dos casos de uso e das regras, com implementações falsas das portas em memória: sem banco, arquivos reais ou rede. Testes de integração (banco, arquivos, bibliotecas externas) são separados e marcados.
+- **Testes unitários** das regras e unidades definidas pela arquitetura do projeto, com dependências substituídas em memória quando necessárias: sem banco, arquivos reais ou rede. Testes de integração (banco, arquivos, bibliotecas externas) são separados e marcados.
 - **Seleção pelo que mudou:** antes de testar, um seletor lê o `git diff` e consulta um **mapa versionado** (arquivo → testes e percursos), mostra o plano com os motivos e roda só o necessário.
   - Mudança só em documentação não roda nada.
   - Arquivo fora do mapa amplia a seleção: na dúvida, roda mais.
@@ -82,10 +47,23 @@ Decida onde cada parte vai, e só então escreva:
 Valem quando a vault tiver a ferramenta configurada, com nota própria em `Referências/Infraestrutura/`.
 
 - **Orquestração de workers** (como a Alethe): o trabalho divisível vai para workers, conforme a regra da ferramenta no `AGENTS.md`.
-- **Grafo do código** (como o Graphify): em teste no primeiro projeto que o adotou. Se servir, o índice passa a ser refeito a cada commit e alimenta o mapa do seletor e a conferência da Arquitetura Limpa. Se não servir, troca-se por um script próprio que extrai as dependências.
+- **Grafo do código** (como o Graphify): em teste no primeiro projeto que o adotou. Se servir, o índice passa a ser refeito a cada commit e alimenta o mapa do seletor e a conferência da arquitetura adotada. Se não servir, troca-se por um script próprio que extrai as dependências.
 
 ## 5. Etapas e entrega
 
 - Classifique cada pedido antes de implementar (item 6 do [[AGENTS|AGENTS.md]]) e siga a skill `nova-etapa`, ou a do projeto quando houver.
 - Telas novas só depois do visual aprovado. A aprovação estética final é sempre do usuário, depois da entrega.
 - Projetos que geram executável informam a pasta exata do executável a cada entrega.
+
+## 6. Execução incremental e contexto curto
+
+Regra aprovada em 2026-11-13 (“Pode atualizar a vault”), a partir do estudo do DGLab. O usuário pode pedir uma leva grande; o agente organiza a execução sem exigir que ele faça a divisão técnica.
+
+- Dividir o escopo aprovado em fluxos pequenos e verificáveis. Quando houver contratos novos compartilhados, concluir primeiro uma fatia ponta a ponta para estabilizá-los antes de paralelizar unidades dependentes.
+- Definir dono dos dados, intenção, responsabilidades, fronteira transacional e falhas esperadas num contrato curto, proporcional à tarefa; reaproveitar a arquitetura e padrões existentes.
+- Integrar cada unidade pronta e verificar o que ela afeta, antes de acumular a próxima. Antecipar revisão das fronteiras de migração, importação e dados persistidos.
+- Usar Alethe nas unidades independentes conforme `AGENTS.md`; trabalho pequeno ou acoplado permanece com o líder. Evitar workers que precisam continuamente do resultado inacabado uns dos outros.
+- Após as leituras obrigatórias, carregar só os trechos relevantes. Briefs e relatórios são curtos e apontam para fontes. Antes de pausa, registrar revisão atual, pendências, evidências válidas e próximo passo; retomar só os agentes necessários com esse checkpoint.
+- Associar evidências à revisão, dependências, testes, ferramentas e dados utilizados. Reaproveitar apenas resultados comprovadamente válidos; alterações relevantes invalidam os dependentes. Se não houver rastreabilidade suficiente, verificar novamente. Isso não dispensa portões por commit, gatilhos amplos ou a verificação de versão completa.
+- Acompanhar processos por resumo final ou falha, evitando consultas frequentes que apenas repetem o mesmo estado. Registrar separadamente tempo de execução, espera e consumo do líder/workers quando disponível; cache, saída e entrada nova ficam separados. Não estimar preço ou cota sem fonte.
+- Ajustes dos seletores, cache automático de resultados e novas ferramentas precisam de implementação e validação próprias; esta regra não afirma que já existem. Não alterar o conjunto obrigatório de testes sem decisão específica.

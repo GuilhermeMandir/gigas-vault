@@ -14,9 +14,13 @@ Esta seção é preenchida pela entrevista de [[Projetos/primeiros-passos/plano|
 - Peça confirmação antes de apagar ou reorganizar muitos arquivos.
 - Entrada guarda materiais ainda não organizados; Referências, material de consulta.
 
-## Arquitetura Limpa é lei
+## Arquitetura definida por projeto
 
-Em todo projeto de programação, a Arquitetura Limpa vem **antes** de prazo, funcionalidade nova e economia de tokens, inclusive em correção pontual e trabalho de worker: decida a camada de cada parte antes de escrever ([[Referências/Desenvolvimento/regras-gerais|regras gerais]], seção 1), não entregue desvio “para corrigir depois”, rode o teste de arquitetura (zero violações) e revise o próprio diff contra a lista de proibidos antes de cada commit. Etapa ou módulo novo passa por revisão independente antes da entrega. Uma entrega com desvio conhecido não está pronta.
+Todo projeto de programação define, documenta e segue fielmente sua arquitetura, conforme a seção 1 das [[Referências/Desenvolvimento/regras-gerais|regras gerais]]. Antes de escrever, consulte responsabilidades e dependências; revise o diff e aplique os portões definidos pelo projeto. Mudança da arquitetura acordada exige proposta e confirmação. Arquitetura Limpa é uma opção, obrigatória apenas nos projetos que a adotaram.
+
+## Execução incremental
+
+O usuário pode pedir levas grandes; cabe ao agente dividi-las em fluxos pequenos, estabilizar contratos antes de paralelizar dependentes e integrar cada unidade pronta. Use briefs/checkpoints curtos e evidências rastreáveis por revisão, sem dispensar testes obrigatórios. Procedimento na seção 6 das [[Referências/Desenvolvimento/regras-gerais|regras gerais]].
 
 ## Antes de executar
 
@@ -37,7 +41,7 @@ Em todo projeto de programação, a Arquitetura Limpa vem **antes** de prazo, fu
    **Projeto novo:** antes de classificar, identifique a que projeto o pedido pertence. Trabalho com objetivo próprio, que vai durar mais de uma tarefa e não cabe no objetivo de um projeto existente, é um **projeto novo**: diga isso ao usuário e proponha criar a pasta em `Projetos/` antes de começar. Não registre esse trabalho dentro de outro projeto nem só em notas de Referências.
    Quando o usuário passar uma leva de pedidos (vários itens ditados em sequência), anote cada item e, ao fim da leva, faça uma entrevista para validar os pontos em aberto antes de implementar ou de arquivar a leva.
 
-7. **Regras de desenvolvimento:** todo projeto de programação segue [[Referências/Desenvolvimento/regras-gerais|as regras gerais de desenvolvimento]] (Arquitetura Limpa, testes unitários e seleção pelo que mudou, versionamento semântico, Git, com GitHub opcional) e a nota `Projetos/<projeto>/regras-de-desenvolvimento.md` do próprio projeto. Projeto novo herda as gerais e cria só a sua nota, sem repetir o texto delas. Projetos que geram executável informam a pasta do executável a cada entrega.
+7. **Regras de desenvolvimento:** todo projeto de programação segue [[Referências/Desenvolvimento/regras-gerais|as regras gerais de desenvolvimento]] (arquitetura definida por projeto, execução incremental, testes unitários e seleção pelo que mudou, versionamento semântico, Git, com GitHub opcional) e a nota `Projetos/<projeto>/regras-de-desenvolvimento.md` do próprio projeto. Projeto novo herda as gerais e cria só a sua nota, sem repetir o texto delas. Projetos que geram executável informam a pasta do executável a cada entrega.
 
 ## Durante o trabalho
 
