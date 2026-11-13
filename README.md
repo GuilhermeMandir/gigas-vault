@@ -29,7 +29,7 @@ Esta é a versão limpa: só a estrutura, as regras e os modelos, sem projetos d
 | `Diário/` | Registros por data, opcionais. |
 
 - **`AGENTS.md`** é a fonte única de regras para qualquer agente: como ler os projetos, quando entrevistar você antes de implementar, como registrar decisões e como encerrar uma tarefa.
-- **`Referências/Desenvolvimento/regras-gerais.md`** vale para todo projeto de programação: Arquitetura Limpa, testes unitários com seleção pelo que mudou, versão semântica e Git (GitHub é opcional).
+- **`Referências/Desenvolvimento/regras-gerais.md`** vale para todo projeto de programação: arquitetura definida e seguida por projeto, execução incremental, testes unitários com seleção pelo que mudou, versão semântica e Git (GitHub é opcional).
 - Cada projeto pode ter a sua `regras-de-desenvolvimento.md`, só com o que é dele.
 
 ## No dia a dia
