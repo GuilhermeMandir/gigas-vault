@@ -54,6 +54,7 @@ Valem quando a vault tiver a ferramenta configurada, com nota própria em `Refer
 - Classifique cada pedido antes de implementar (item 6 do [[AGENTS|AGENTS.md]]) e siga a skill `nova-etapa`, ou a do projeto quando houver.
 - Telas novas só depois do visual aprovado. A aprovação estética final é sempre do usuário, depois da entrega.
 - Projetos que geram executável informam a pasta exata do executável a cada entrega.
+- **Tabela de testes em toda entrega** (pedido do usuário em 2026-11-24: “Tabelinha com todas as funções novas pra ficar fácil pra eu testar. Pode virar regra no fluxo de desenvolvimento”): o relato de cada entrega traz uma tabela com **todas** as funções novas ou mudadas, uma por linha, com as colunas **#**, **Onde** (tela ou caminho até ela), **O que fazer** e **O que deve acontecer**, na ordem em que fazem sentido testar. Funções de entregas anteriores da mesma etapa que o usuário ainda não avaliou entram também. A mesma tabela fica gravada no documento técnico do módulo (seção “Roteiro de teste”).
 
 ## 6. Execução incremental e contexto curto
 

@@ -43,6 +43,7 @@ Cada passo só avança com a confirmação explícita do usuário. Se o projeto 
 - **Execução incremental:** estabilizar contratos numa fatia ponta a ponta antes de paralelizar dependentes; integrar cada unidade pronta. Usar briefs/checkpoints curtos e evidências rastreáveis por revisão, conforme seção 6 das regras gerais.
 - Desvio de uma decisão confirmada fica como proposta em `plano.md` até o usuário responder.
 - Teste e entregue como combinado no passo 3. Informe o que foi verificado, o que não foi e, se houver executável, a pasta exata.
+- Termine o relato com a **tabela de testes** das funções novas (#, Onde, O que fazer, O que deve acontecer), conforme a seção 5 das regras gerais; grave a mesma tabela no documento do módulo.
 - Atualize os registros e envie o backup, conforme "Antes de encerrar a tarefa" no `AGENTS.md` da vault.
 - Quando o mesmo processo de teste ou entrega se repetir, proponha transformá-lo em skills próprias do projeto (prefixo com o nome do projeto) e cite-as na nota de regras dele.
 
